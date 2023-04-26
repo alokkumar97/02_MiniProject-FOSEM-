@@ -7,4 +7,6 @@ import com.FOSEM.main.Entity.Users;
 public interface IUserRepository extends JpaRepository<Users, Integer> {
 
 	public Users findByUserEmail(String userEmail);
+	
+	public Users findByUserEmailAndPassword(String userEmail, String password);
 }

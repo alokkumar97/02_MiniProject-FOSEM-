@@ -11,7 +11,7 @@ public interface IUserService {
 	
 	public boolean signup(SignUpForm form);
 	
-	public boolean unlock(UnlockForm form);
+	public boolean unlockPage(UnlockForm form);
 	
 	public String forgotPwd(String email);
 	

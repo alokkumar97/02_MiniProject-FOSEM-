@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UnlockForm{
 
-	private String email;
+	private String userEmail;
 	private String tempPsswd;
 	private String newPwd;
 	private String confirmPwd;
