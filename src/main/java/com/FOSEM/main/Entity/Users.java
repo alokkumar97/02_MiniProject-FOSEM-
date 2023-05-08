@@ -46,6 +46,6 @@ public class Users {
 	private String accountStatus;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<StudentRegister> sid;
+	private List<StudentRegister> enquries;
 	
 }

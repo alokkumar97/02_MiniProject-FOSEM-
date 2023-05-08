@@ -65,7 +65,7 @@ public class UserController {
 	
 	@PostMapping("/unlock")
 	public String unlockPageHandler(@ModelAttribute("unlock") UnlockForm unlock, Model model) {
-		System.out.println(unlock);
+
 		if(unlock.getNewPwd().equals(unlock.getConfirmPwd())) {
 			boolean status = userService.unlockPage(unlock);
 			if(status) {

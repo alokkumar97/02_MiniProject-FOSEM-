@@ -10,14 +10,14 @@ import com.FOSEM.main.Entity.EnquiryStatus;
 
 public interface StudentService {
 
-	public DashBoardResponse res(Integer userid);
+	public DashBoardResponse getTotalEnquries(Integer userid);
 	
 	public String addEnquiries(EnquiryForm form);
 	
 	public List<EnquiryForm> viewEnquries(Integer userid, EnquirySearchCriteria criteria);
 	
-	public List<Courses> getAllCourse();
+	public List<String> getAllCourse();
 	
-	public List<EnquiryStatus> getAllStatus();
+	public List<String> getAllStatus();
 	
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Student Register</title>
@@ -16,12 +16,12 @@
 			<img alt="" src="/images/AshokIT-Logo.jpg">
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link active"
-						aria-current="page" href="/dashboard">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="/addstudent">Add Enquiries</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="/viewstudents">View Enquiries</a>
-					</li>
+					<li class="nav-item"><a class="nav-link active "
+						aria-current="page" href="/dashboard"><b>Home</b></a></li>
+					<li class="nav-item "><a class="nav-link  active" href="/addstudent"><b>Add
+							Enquiries</b></a></li>
+					<li class="nav-item"><a class="nav-link  active" href="/viewstudents"><b>View
+							Enquiries</b></a></li>
 				</ul>
 				<form class="d-flex" role="search">
 					<a href="/logout" class="btn btn-danger">Logout</a>
@@ -37,13 +37,15 @@
               <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                 <div class="card-body p-4 p-md-5">
                   <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Student Registration Form</h3>
-                  <form>
-      
+                  
+                  <p th:text="${succMsg}" class= "text-success"/>
+                  <p th:text="${errMsg}" class= "text-success"/>
+                  
+                  <form th:action="@{/addstudent}" th:object="${formObj}" method="post">      
                     <div class="row">
-                      <div class="col-md-8 mb-2 pd-2">
-      
+                      <div class="col-md-8 mb-2 pd-2">      
                         <div class="form-outline">
-                          <input type="text" id="firstName" class="form-control form-control-lg" />
+                          <input type="text" id="firstName" class="form-control form-control-lg" th:field="*{stdName}"/>
                           <label class="form-label" for="firstName">Student Name</label>
                         </div>
       
@@ -54,7 +56,7 @@
                       <div class="col-md-8 d-flex align-items-center">
       
                         <div class="form-outline">
-                            <input type="tel" id="phoneNumber" class="form-control form-control-lg" />
+                            <input type="tel" id="phoneNumber" class="form-control form-control-lg" th:field="*{phoneNo}" />
                             <label class="form-label" for="phoneNumber">Phone Number</label>
                           </div>
       
@@ -64,10 +66,10 @@
                     <div class="row">
                         <label class="form-label select-label mt-2">Class Mode</label>
                         <div class="col-12">                       
-                        <select class="select form-control-lg">
+                        <select class="select form-control-lg" th:field="*{classMode}">
                           <option value="">-Select-</option>
-                          <option value="1">Class Room</option>
-                          <option value="2">Online</option>
+                          <option value="Class Room">Class Room</option>
+                          <option value="Online">Online</option>
                         </select>     
                       </div>
                     </div>
@@ -75,11 +77,9 @@
                     <div class="row">
                         <label class="form-label select-label mt-2">Courses</label>
                         <div class="col-12">                      
-                        <select class="select form-control-lg">
-                          <option value="">Choose option</option>
-                          <option value="2">Subject 1</option>
-                          <option value="3">Subject 2</option>
-                          <option value="4">Subject 3</option>
+                        <select class="select form-control-lg" th:field="*{courseName}">
+                          <option value="">--Select--</option>
+                          <option th:each="course: ${courses}"   th:value="${course}" th:text="${course}"></option>
                         </select>     
                       </div>
                     </div>
@@ -87,9 +87,9 @@
                     <div class="row">
                         <label class="form-label select-label mt-2">Enquiry Status</label>
                         <div class="col-12">                       
-                        <select class="select form-control-lg">
+                        <select class="select form-control-lg" th:field="*{enquiryStatus}">
                           <option value="">Choose option</option>
-                          <option value="1">Dynamic Value</option>
+                          <option th:each="enquiry: ${enqStatus}"   th:value="${enquiry}" th:text="${enquiry}"></option>
                         </select>     
                       </div>
                     </div>

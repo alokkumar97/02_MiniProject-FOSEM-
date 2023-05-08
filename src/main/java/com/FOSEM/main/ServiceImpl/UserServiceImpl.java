@@ -27,36 +27,39 @@ public class UserServiceImpl implements IUserService {
 	
 	@Override
 	public String login(LoginForm form) {
+		// Get LoginForm obj from form page and verify user email and password from DB
 		Users user = userRepo.findByUserEmailAndPassword(form.getUserEmail(), form.getPassword());
+		// if User details is either null or LOCKED then return Invalid
 		if(user == null) {
 			return "Invalid Credentials !!";
 		}
-		/*if(user.getAccountStatus().equals("LOCKED")) {
+		if(user.getAccountStatus().equals("LOCKED")) {
 			return "Your Account is Locked !!";
 		}
-		*/
+		//If above conditions are not satisfy then create a session based on user id
 		session.setAttribute("uid", user.getUid());
 		return "Success";
 	}
 
 	@Override
 	public boolean signup(SignUpForm form) {
-		
+		//Get SignUp form data from signUp page and verify user from DB based on that user email 
 		Users user =userRepo.findByUserEmail(form.getUserEmail());
+		//if that that user is present then return false or create new user with below details
 		if(user != null) {
 			return false;
 		}		
-		//TODO: copy data from binding form to entity obj	
+		//Create a empty user entity object and copy data from binding form to entity obj	
 		Users entity= new Users();
 		BeanUtils.copyProperties(form, entity);
-		//TODO: generate random pwd
+		// generate random password and store into entity obj
 		String tempPwd= PasswordUtil.generatePwd();
 		entity.setPassword(tempPwd);
-		//TODO: Set account status default - Locked 
+		// Set account status default - Locked 
 		entity.setAccountStatus("LOCKED");
-		//TODO: insert data
+		// insert/save user data
 		userRepo.save(entity);
-		//TODO: send email to user
+		//send email to user with temporary password
 		String subject ="Unlock Your Account !";
 		String to = form.getUserEmail();
 		StringBuffer body =new StringBuffer("");
@@ -72,10 +75,14 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public boolean unlockPage(UnlockForm form) {
-		Users user = userRepo.findByUserEmail(form.getUserEmail());
+		//Get user details from UnlockForm page and fetch that user details from DB
+		Users user = userRepo.findByUserEmail(form.getUserEmail().trim());
+		//Verify DB password and temporary password 
 		if(user.getPassword().equals(form.getTempPsswd())) {
+			// If verify then only update new password and status
 			user.setPassword(form.getNewPwd());
 			user.setAccountStatus("UNLOCKED");
+			//then save into DB
 			userRepo.save(user);
 			return true;
 		}else {
@@ -85,10 +92,13 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public String forgotPwd(String email) {
+		//Get User email from query param and verify that user email with DB user
 		Users users = userRepo.findByUserEmail(email);
+		// If not present then return Invalid 
 		if(users == null) {
 			return "Invalid user name !!";
 		}
+		// If present then send password to that user email
 		String subject="Recover password !";
 		String body="Your recovery password is :: "+ users.getPassword();
 		mailUtil.sendMail(subject, body, email);
